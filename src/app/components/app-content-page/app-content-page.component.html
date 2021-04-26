@@ -1,0 +1,24 @@
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <!-- <h3 class="card-title">Title</h3> -->
+
+        <ng-content select="[content-header]"></ng-content>
+
+      </div>
+      <div class="card-body">
+        <ng-content></ng-content>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+
+      </div>
+      <!-- /.card-footer-->
+    </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->

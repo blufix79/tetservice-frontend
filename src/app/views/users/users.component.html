@@ -1,0 +1,77 @@
+<app-header-page titlePage="Users" breadCrumbPage="Users" iconPage="fas fa-users"></app-header-page>
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"></h3>
+
+        <div class="card-tools">
+
+        </div>
+      </div>
+      <div class="card-body">
+
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">username</th>
+              <th scope="col">email</th>
+              <th scope="col">Data Registrazione</th>
+              <th scope="col">Piano Attivo</th>
+              <th scope="col">Azioni</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let user of users; let i = index">
+            <tr>
+              <th scope="row">{{i+1}}</th>
+              <td>{{user.id}}</td>
+              <td>{{user.name}}</td>
+              <td>{{user.username}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.registerDate|date}}</td>
+              <td>{{user.service_name}}</td>
+              <td>
+                <a class="btn btn-sm btn-primary" [routerLink]="['/user',user.id]"><i class="fa fa-search" aria-hidden="true"></i></a>
+                <a class="btn btn-sm btn-danger" (click)="deleteUser(userDeleteConfirm,user)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+
+      </div>
+      <!-- /.card-footer-->
+    </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+
+<ng-template #userDeleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Eliminazione Utente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Sei sicuro di voler eliminare l'utente <span class="text-primary">{{userToDelete}}</span>?</strong></p>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Annulla</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('ok')">Ok</button>
+  </div>
+</ng-template>

@@ -1,0 +1,18 @@
+// .card-header ::ng-deep .card-tools {
+//   float: right;
+//   margin-right: -0.625rem;
+// }
+
+.card-header{
+  & ::ng-deep{
+
+    .card-tools {
+      float: right;
+      margin-right: -0.625rem;
+    }
+
+    .card-title{
+      width: 30%;
+    }
+  }
+}

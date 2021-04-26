@@ -1,0 +1,207 @@
+<app-header-page titlePage="Traduzioni" breadCrumbPage="Traduzioni" iconPage="fas fa-users"></app-header-page>
+
+<app-content-page>
+
+  <div content-header>
+
+    <div class="card-title">
+      <div class="input-group">
+        <input type="search" [(ngModel)]="searchText" class="form-control form-control-lg"
+          placeholder="Type your keywords here">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-lg btn-default">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-tools">
+      <button type="button" class="btn btn-app bg-primary" data-widget="remove" data-toggle="tooltip" title="Remove"
+        (click)="newGroup(contentNewGroup)">
+        <i class="fa fa-plus-circle"></i>
+        Aggiungi Gruppo
+      </button>
+      <button type="button" class="btn btn-app bg-primary" data-widget="remove" data-toggle="tooltip" title="Remove"
+        (click)="newLabel(contentNewLabel)">
+        <i class="fa fa-plus-circle"></i>
+        Aggiungi Etichetta
+      </button>
+      <button type="button" class="btn btn-app bg-success" data-widget="remove" data-toggle="tooltip" title="Remove"
+        (click)="downloadTranslationsToJson()">
+        <i class="fa fa-download"></i>
+        Download
+      </button>
+      <button type="button" class="btn btn-app bg-danger" data-widget="remove" data-toggle="tooltip" title="Remove"
+        (click)="importTranslationsFromJson(contentImportConfirm)">
+        <i class="fa fa-upload"></i>
+        Import
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-auto">
+      <b>Gruppo</b>
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" (click)="selectGroup(group)"
+          [ngClass]="group.active?'active':''"
+          *ngFor="let group of groups | groupsFilter: searchText; let i = index">
+          {{group.name}}
+          <span *ngIf="group.emptyLabels" class="badge badge-warning badge-pill">{{group.emptyLabels}}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md">
+      <b>Etichetta</b>
+      <ngb-accordion *ngIf="groups.length>0" [closeOthers]="true" #acc="ngbAccordion" activeIds="ngb-panel-0">
+        <ngb-panel [cardClass]="label.emptyLangs>0?'label-empty':''" *ngFor="let label of groups[groupSelected.index].labels | translationsFilter: searchText">
+          <ng-template ngbPanelHeader>
+            <button class="btn btn-link" ngbPanelToggle>
+              {{label.id}} - {{label.label}}
+              <span class="badge badge-danger" *ngIf="label.emptyLangs">{{label.emptyLangs}}</span>
+            </button>
+            <div class="card-tools">
+              <button class="btn btn-tool" (click)="copyToClipboardLabel(label)"><i class="fa fa-copy"></i></button>
+              <button class="btn btn-tool" (click)="editLabel(contentEditLabel,label)"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-tool" (click)="deleteLabel(contentDeleteConfirm,label)"><i class="fa fa-trash"></i></button>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <form [formGroup]="forms[label.id+''+label.label]" (ngSubmit)="onSubmit(forms[label.id+''+label.label].value)">
+
+              <div class="form-group" *ngFor="let lang of label.langs;let i=index">
+                <!-- <label for="exampleInputEmail1">Email address</label> -->
+                <input type="hidden" [formControlName]="'translation-id-'+i">
+                <!-- <input type="text" class="form-control" [formControlName]="'translation-'+i" id="{{lang.id}}"> -->
+                <small class="form-text text-muted">
+                  {{lang.locale}}
+                </small>
+                <textarea class="form-control" id="{{lang.id}}" [(ngModel)]="lang.translation" [formControlName]="'translation-'+i"></textarea>
+              </div>
+              <button class="btn btn-primary">Salva</button>
+            </form>
+            <!-- {{forms[label.label].value|json}} -->
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+
+
+  </div>
+
+
+</app-content-page>
+
+
+<ng-template #contentNewGroup let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Nuovo gruppo</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="group">Nome gruppo</label>
+        <input id="group" class="form-control" [(ngModel)]="newGroupName"  name="groupName">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('save')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #contentNewLabel let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Nuova etichetta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <select class="custom-select" name="groupLabelId" [(ngModel)]="newLabelModel.id" (change)="selectGroupChange($event.target.value)">
+          <option [value]="group.id" *ngFor="let group of groups; let i = index">{{group.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="label">Nome etichetta</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{labelPrefix}}</span>
+          </div>
+          <input id="label" class="form-control" [(ngModel)]="newLabelModel.label"  name="labelName">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('save')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #contentEditLabel let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Modifica etichetta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="label">Nome etichetta</label>
+        <!-- <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{labelPrefix}}</span>
+          </div>
+          <input id="label" class="form-control" [(ngModel)]="editLabelModel.label"  name="labelName">
+        </div> -->
+        <input id="label" class="form-control" [(ngModel)]="editLabelModel.label"  name="labelName">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('save')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #contentDeleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Eliminazione etichetta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Sei sicuro di voler eliminare l'etichetta <span class="text-primary">{{deletionLabelName}}</span>?</strong></p>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Annulla</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('ok')">Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #contentImportConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Importa traduzioni</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Sei sicuro di voler importare le traduzioni da file json?</strong></p>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Annulla</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('ok')">Ok</button>
+  </div>
+</ng-template>

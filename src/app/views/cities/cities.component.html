@@ -1,0 +1,29 @@
+<app-header-page
+  titlePage="Città"
+  breadCrumbPage="Città"
+  iconPage="fas fa-city"
+></app-header-page>
+
+<app-content-page>
+  <div content-header>
+    <h3 class="card-title">Città</h3>
+    <div class="card-tools">
+      <button
+        type="button"
+        class="btn bg-primary"
+        data-widget="remove"
+        data-toggle="tooltip"
+        title="Remove"
+        (click)="newCity()"
+      >
+        <i class="fa fa-plus-circle"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="list-group list-group-flush">
+    <div class="list-group-item" *ngFor="let city of cities | async">
+      {{ city.comune }}
+    </div>
+  </div>
+</app-content-page>

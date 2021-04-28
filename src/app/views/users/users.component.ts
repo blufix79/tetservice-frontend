@@ -17,25 +17,26 @@ export class UsersComponent implements OnInit {
     private userService: UsersService,
     private toastr: ToastrService,
     private modalService: NgbModal) {
-    //this.users = userService.getUsers();
+    // this.users = userService.getUsers();
   }
 
   ngOnInit() {
     this.userService.getUsers()
-      .subscribe((results)=>{
+      .subscribe((results) => {
         this.users = results;
-      })
+      });
   }
 
   deleteUser(content, user: User){
-    this.userToDelete = user.name
+    this.userToDelete = user.name;
     this.modalService.open(content)
-      .result.then(res=>{
-        if(res=='ok'){
-          this.userService.deleteUser(user.id).subscribe((result)=>{
+      .result.then(res => {
+        if (res === 'ok'){
+          this.userService.deleteUser(user.id).subscribe((result) => {
             this.toastr.success('Utente Eliminato');
-            let indexUser = this.users.indexOf(user);
-            this.users.splice(indexUser,1);
+            const indexUser = this.users.indexOf(user);
+            this.users.splice(indexUser, 1);
+
           });
         }
       });

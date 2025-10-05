@@ -1,0 +1,40 @@
+#listInterventions {
+    .type-list {
+        display: block;
+    }
+}
+
+#listInterventionsPrint {
+    display: none;
+}
+
+
+
+@media print {
+    .card-title {
+        color: black !important;
+    }
+
+    #listInterventions {
+        display: none;
+    }
+
+    #listInterventionsPrint {
+        display: block;
+
+        .intervention {
+            border: 1px dashed gray !important;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            font-size: 18px;
+
+            .name {
+                color: red !important;
+            }
+
+            ul li {
+                list-style: none;
+            }
+        }
+    }
+}

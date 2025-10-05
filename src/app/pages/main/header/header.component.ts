@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AppService } from 'src/app/utils/services/app.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   @Output() toggleMenuSidebar: EventEmitter<any> = new EventEmitter<any>();
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      search: new FormControl(null),
+      search: new FormControl(null)
     });
   }
 

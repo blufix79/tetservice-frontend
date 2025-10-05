@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-6">
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" [(ngModel)]="search" (ngModelChange)="filterData()"
+                    placeholder="Cerca..." aria-label="Cerca" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <span *ngIf="!search" class="input-group-text"><i class="fas fa-search"></i></span>
+                    <button *ngIf="search" class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="clearSearch()"><i
+                            class="fas fa-times text-red"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showFilterCity" class="col-6">
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <select class="form-control select-element-city" [(ngModel)]="city">
+                    <!-- <option value="0">Tutte</option> -->
+                    <option *ngFor="let city of cities" [value]="city.id">{{city.comune}}</option>
+                </select>
+                <div class="input-group-append">
+                    <span *ngIf="!city" class="input-group-text"><i class="fas fa-filter"></i></span>
+                    <button *ngIf="city" class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="clearFilterCity()"><i
+                            class="fas fa-times text-red"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

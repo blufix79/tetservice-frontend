@@ -1,3 +1,4 @@
+<ng-http-loader [filteredUrlPatterns]="['\\?search']"></ng-http-loader>
 <!-- Main content -->
 <section class="content">
   <!-- Default box -->
@@ -9,12 +10,12 @@
         <ng-content select="[content-header]"></ng-content>
 
       </div>
-      <div class="card-body">
+      <div class="card-body p-0">
         <ng-content></ng-content>
       </div>
       <!-- /.card-body -->
       <div class="card-footer">
-
+        <ng-content select="[content-footer]"></ng-content>
       </div>
       <!-- /.card-footer-->
     </div>

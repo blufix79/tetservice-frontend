@@ -1,8 +1,9 @@
+import { AppService } from 'src/app/utils/services/app.service';
 import { Injectable } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
-  ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
@@ -12,6 +13,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
+  constructor(private appService: AppService){}
+
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -20,7 +24,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return true;
+    return this.getProfile();
   }
   canActivateChild(
     next: ActivatedRouteSnapshot,
@@ -30,6 +34,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return true;
+    return this.canActivate(next, state);
+  }
+
+  async getProfile() {
+    if (this.appService.user) {
+      return true;
+    }
+
+    try {
+      await this.appService.getProfile();
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

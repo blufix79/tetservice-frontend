@@ -9,7 +9,7 @@ describe('NotificationsDropdownMenuComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [NotificationsDropdownMenuComponent],
+        declarations: [NotificationsDropdownMenuComponent]
       }).compileComponents();
     })
   );

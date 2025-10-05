@@ -1,15 +1,259 @@
-<app-header-page titlePage="Interventi" breadCrumbPage="Interventi" iconPage="fas fa-gear"></app-header-page>
+<app-header-page titlePage="Interventi" breadCrumbPage="Interventi" iconPage="fas fa-tools"></app-header-page>
 
 <app-content-page>
   <div content-header>
-    <h3 class="card-title">
-      Interventi
+    <h3 class="card-title tools">
+      <app-search (searchWord)="searchWordText($event)"></app-search>
     </h3>
     <div class="card-tools">
       <button type="button" class="btn bg-primary" data-widget="remove" data-toggle="tooltip" title="Remove"
-        (click)="newIntervention()">
+        (click)="newItem(contentAddIntervention)">
         <i class="fa fa-plus-circle"></i>
       </button>
     </div>
   </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Titolo</th>
+        <th>Descrizione</th>
+        <th>Data</th>
+        <th>Prodotto</th>
+        <th>Cliente</th>
+        <th>Tecnico</th>
+        <th>Stato</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let intervention of interventions | filterGeneric: search | paginate: {itemsPerPage: 10, currentPage: p}; let i = index">
+        <td style="width: 1%">{{ i+1 }}</td>
+        <td style="width: 1%" appHiglight [content]="intervention.id.toString()" [searchedWord]="search">
+          {{intervention.id}}</td>
+        <td style="width: 25%" appHiglight [content]="intervention.titolo" [searchedWord]="search">
+          {{intervention.titolo}}</td>
+        <td style="width: 15%" appHiglight [content]="intervention.descrizione" [searchedWord]="search">
+          {{intervention.descrizione}}</td>
+        <td style="width: 8%" appHiglight [content]="intervention.data|date:'d-M-y':'it-IT'" [searchedWord]="search">
+          {{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+        <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
+            {{product.nome}} {{product.modello}}</span></td>
+        <td>
+          <a href="#" [routerLink]="['/customer',intervention.customer.id]">
+            <span appHiglight [content]="intervention.customer.cognome"
+              [searchedWord]="search">{{intervention.customer.cognome}}</span>&nbsp;
+          </a>
+          <span placement="right" [ngbPopover]="customerCityTmplRef" popoverTitle="Indirizzo" container="body">
+            <i class="fa fa-eye text-info"></i>
+            <ng-template #customerCityTmplRef>
+              <b>Città:</b> {{intervention.customer.city.comune}}<br>
+              <b>Indirizzo: </b>{{intervention.customer.indirizzo}} <br>
+              <b *ngIf="intervention.customer.telefono">Telefono: </b>{{intervention.customer.telefono}} <br>
+              <b *ngIf="intervention.customer.cellulare">Telefono: </b>{{intervention.customer.cellulare}} <br>
+              <!-- {{timeSlot.intervention|json}} -->
+            </ng-template>
+          </span>
+        </td>
+        <td>
+          <span appHiglight [content]="intervention.repairer.cognome"
+            [searchedWord]="search">{{intervention.repairer.cognome}}</span>&nbsp;
+          <span *ngIf="!intervention.slot_id" placement="right" ngbPopover="Orario intervento non selezionato"
+            popoverTitle="Orario Intervento" container="body">
+            <i class="fa fa-exclamation-triangle text-warning"></i></span>
+        </td>
+        <td appHiglight [content]="intervention.state.nome" [searchedWord]="search">{{intervention.state.nome}}</td>
+        <td class="actions" style="width: 15%">
+          <button class="btn btn-sm btn-success" [routerLink]="['/intervention',intervention.id]">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn btn-sm btn-primary" (click)="edit(contentAddIntervention, intervention)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="delete(intervention)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div content-footer>
+    <pagination-controls (pageChange)="p = $event" previousLabel="Indietro" nextLabel="Avanti"></pagination-controls>
+  </div>
 </app-content-page>
+
+
+<ng-template #contentAddIntervention let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="interventionForm">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" formControlName="data" class="form-control datetimepicker-input" (change)="changeData()">
+        <div *ngIf="data.invalid && (data.dirty || data.touched)" class="alert alert-danger">
+          <div *ngIf="data.errors.required">
+            La data è obbligatoria
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="titolo">Titolo</label>
+        <input type="text" class="form-control" formControlName="titolo" [ngClass]="{
+            'is-valid': titolo.valid,
+            'is-invalid': titolo.invalid && (titolo.dirty || titolo.touched)
+          }" required />
+        <div *ngIf="titolo.invalid && (titolo.dirty || titolo.touched)" class="alert alert-danger">
+          <div *ngIf="titolo.errors.required">
+            Il titolo è obbligatorio
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="hidden" formGroupName="id" />
+        <label for="titolo">Descrizione</label>
+        <input type="text" class="form-control" formControlName="descrizione" [ngClass]="{
+            'is-valid': descrizione.valid,
+            'is-invalid': descrizione.invalid && (descrizione.dirty || descrizione.touched)
+          }" required />
+        <div *ngIf="descrizione.invalid && (descrizione.dirty || descrizione.touched)" class="alert alert-danger">
+          <div *ngIf="descrizione.errors.required">
+            La descrizione è obbligatoria
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="note">Note</label>
+        <textarea class="form-control" formControlName="note"></textarea>
+      </div>
+
+      <div class="form-group">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="garanzia">
+          <label class="custom-control-label" for="customCheck1">In garanzia</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-4">
+          <!-- <app-select label="Cliente" [formControlObject]="customer" propertyName="nome|cognome" [items]="customers"
+            (selected)="selectCustomer($event)"></app-select> -->
+          <div class="customer-button-group">
+            <app-select-http [formControlObject]="customer" [selectNewItem]="sendSelectedNewCustomer"
+              (selected)="selectCustomer($event)"></app-select-http>
+            <button type="button" class="btn bg-success" (click)="openNewCustomerModal()"><i
+                class="fa fa-user-plus"></i></button>
+          </div>
+          <app-select label="Stato" [formControlObject]="state" propertyName="nome" [items]="states"
+            (selected)="selectState($event)"></app-select>
+        </div>
+        <div class="col-4">
+          <app-select label="Tecnico" [formControlObject]="repairer" propertyName="nome|cognome" [items]="repairers"
+            (selected)="selectRepairer($event)"></app-select>
+          <div class="card timeslots-block">
+            <!-- <div class="card-header">
+              <h3 class="card-title">Orario Intervento</h3>
+            </div> -->
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Orario</th>
+                    <th>Disp.</th>
+                    <th>Seleziona</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let timeSlot of timeSlots;let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{timeSlot.start}} - {{timeSlot.end}}</td>
+                    <td>
+                      <span *ngIf="timeSlot.available==false"><i class="fa fa-ban text-danger"></i></span>
+                      <span *ngIf="timeSlot.available==true"><i class="fa fa-check text-success"></i></span>
+                    </td>
+                    <td>
+
+                      <div class="form-group">
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input timeSlotRadio" formControlName="slot_id" name="slot_id"
+                            [attr.disabled]="(timeSlot.available==false)?'':null" type="radio" id="timeSlotRadio{{i+1}}"
+                            [value]="timeSlot.id" (click)="selectSlot(timeSlot.id)">
+                          <label for="timeSlotRadio{{i+1}}" class="custom-control-label">
+                            <!-- <span
+                              *ngIf="(timeSlot.available==false)&&(timeSlot.id!=currentEditIntervention.slot_id)"
+                              placement="right"
+                              ngbPopover="{{timeSlot.intervention.descrizione}}" 
+                              popoverTitle="{{timeSlot.intervention.titolo}}">
+                              <i class="fa fa-eye text-info"></i>
+                            </span> -->
+                            <span *ngIf="(timeSlot.available==false)" placement="right" [ngbPopover]="timeSlotTmplRef"
+                              popoverTitle="Intervento: {{timeSlot.intervention.titolo}}" container="body">
+                              <i class="fa fa-eye text-info"></i>
+                              <ng-template #timeSlotTmplRef>
+                                <b>Data:</b> {{timeSlot.intervention.data}}<br>
+                                <b>Descrizione: </b>{{timeSlot.intervention.descrizione}}<br>
+                                <b>Cliente:</b> {{timeSlot.intervention.customer.cognome}}
+                                {{timeSlot.intervention.customer.nome}}<br>
+                                <!-- {{timeSlot.intervention|json}} -->
+                              </ng-template>
+                            </span>
+
+                          </label>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>Prodotti</label>
+            <select class="form-control select-element" name="products" formControlName="products" multiple="multiple">
+              <option *ngFor="let product of productsList" [value]="product.id">{{product.marca}} {{product.modello}}
+              </option>
+            </select>
+            <div *ngIf="products.invalid && (products.dirty || products.touched)" class="alert alert-danger">
+              <div *ngIf="products.errors.required">
+                Scegli almeno un prodotto dalla lista
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tipologia intervento</label>
+            <select class="form-control select-element" formControlName="repairTypes" multiple="multiple">
+              <option *ngFor="let repairType of repairTypesList" [value]="repairType.id">{{repairType.nome}}</option>
+            </select>
+            <div *ngIf="repairTypes.invalid && (repairTypes.dirty || repairTypes.touched)" class="alert alert-danger">
+              <div *ngIf="repairTypes.errors.required">
+                Scegli almeno una tipologia dalla lista
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">
+      Annulla
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-success" (click)="save()">
+      Salva
+    </button>
+  </div>
+  <!-- {{interventionForm.value|json}} -->
+</ng-template>
+
+<app-customer-form-modal #customerModal (saveCustomer)="onSaveCustomer($event)"></app-customer-form-modal>

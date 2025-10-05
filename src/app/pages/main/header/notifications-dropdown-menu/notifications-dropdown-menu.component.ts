@@ -1,16 +1,16 @@
 import {
   Component,
-  OnInit,
-  ViewChild,
-  HostListener,
   ElementRef,
+  HostListener,
+  OnInit,
   Renderer2,
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'app-notifications-dropdown-menu',
   templateUrl: './notifications-dropdown-menu.component.html',
-  styleUrls: ['./notifications-dropdown-menu.component.scss'],
+  styleUrls: ['./notifications-dropdown-menu.component.scss']
 })
 export class NotificationsDropdownMenuComponent implements OnInit {
   @ViewChild('dropdownMenu', { static: false }) dropdownMenu;

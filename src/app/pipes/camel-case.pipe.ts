@@ -4,10 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'camelCase'
 })
 export class CamelCasePipe implements PipeTransform {
-
-  transform(text:string): string {
-    let t = text.charAt(0).toLocaleLowerCase() + text.slice(1);
+  transform(text: string): string {
+    const t = text.charAt(0).toLocaleLowerCase() + text.slice(1);
     return t;
   }
-
 }

@@ -1,3 +1,4 @@
 export interface RepairType {
-  nome:String
+  id: number;
+  nome: String;
 }

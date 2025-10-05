@@ -9,12 +9,7 @@ export class AppMenuLinkComponent implements OnInit {
   @Input() link: string;
   @Input() icon: string;
 
+  constructor() {}
 
-  constructor() {
-
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

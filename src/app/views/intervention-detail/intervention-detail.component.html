@@ -1,0 +1,103 @@
+<app-header-page titlePage="Intervento" breadCrumbPage="Intervento" iconPage="fas fa-tools"></app-header-page>
+
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default" *ngIf="showReturCustomer" [routerLink]="[returnCustomerUrl]"><i class="fas fa-undo"></i> Ritorna al cliente</button>
+                <button class="btn btn-default" [routerLink]="['/interventions']"><i class="fas fa-undo"></i> Lista interventi</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-gradient-navy">
+                        <h3 class="card-title"><i class="fas fa-list"></i> Dettagli intervento</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Data:</b> {{intervention.data | date: 'longDate'}} - 
+                            <b>Orario Intervento:</b> 
+                            <!-- {{intervention.timeslots.start}} - {{intervention.timeslots.end}} -->
+                            {{'1980-01-01 '+intervention.timeslots.start|date:'HH:mm':'it-IT'}} - {{'1980-01-01 '+intervention.timeslots.end|date:'HH:mm':'it-IT'}}
+                        </li>
+                        <li class="list-group-item"><b>Titolo:</b> {{intervention.titolo}}</li>
+                        <li class="list-group-item"><b>Descrizione:</b> {{intervention.descrizione}}</li>
+                        <li class="list-group-item"><b>Note:</b> {{intervention.note}}</li>
+                        <li class="list-group-item"><b>In garanzia:</b> <i [ngClass]="{'fa fa-check text-success':intervention.garanzia==true}"></i><i
+                            [ngClass]="{'fa fa-times text-danger':intervention.garanzia==false}"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-gradient-olive">
+                        <h3 class="card-title"><i class="fas fa-user"></i> Dettagli Cliente</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Nome:</b> {{intervention.customer.nome}}</li>
+                        <li class="list-group-item"><b>Cognome:</b> {{intervention.customer.cognome}}</li>
+                        <li class="list-group-item"><b>Indirizzo:</b> {{intervention.customer.indirizzo}}</li>
+                        <li class="list-group-item"><b>Città:</b> {{intervention.customer.city.comune}}</li>
+                        <li class="list-group-item"><b>Telefono:</b> {{intervention.customer.telefono}}</li>
+                        <li class="list-group-item"><b>Cellulare:</b> {{intervention.customer.cellulare}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-gradient-indigo">
+                        <h3 class="card-title"><i class="fas fa-user-cog"></i> Tecnico Assegnato</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Nome:</b> {{intervention.repairer.nome}}</li>
+                        <li class="list-group-item"><b>Cognome:</b> {{intervention.repairer.cognome}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-gradient-info">
+                        <h3 class="card-title"><i class="fas fa-boxes"></i> Prodotti</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let product of intervention.products">{{product.marca}} {{product.nome}} {{product.modello}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-gradient-gray">
+                        <h3 class="card-title"><i class="fas fa-toolbox"></i> Tipologia intervento</h3>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let repairType of intervention.repair_types">{{repairType.nome}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-gradient-orange">
+                        <h3 class="card-title"><i class="fas fa-file-signature"></i> Contratto</h3>
+                    </div>
+                    <ul *ngIf="intervention.contract" class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Data Attivazione:</b> {{intervention.contract.data|date:'longDate'}}</li>
+                        <li class="list-group-item"><b>Descrizion:</b> {{intervention.contract.descrizione}}</li>
+                        <li class="list-group-item"><b>Data Scadenza:</b> {{intervention.contract.scadenza|date:'longDate'}}</li>                       
+                        <li class="list-group-item"><b>Attivo:</b> <i [ngClass]="{'fa fa-check text-success':intervention.contract.attivo==true}"></i><i
+                            [ngClass]="{'fa fa-times text-danger':intervention.contract.attivo==false}"></i></li>                       
+                    </ul>
+                    <ul *ngIf="intervention.contract==null" class="list-group list-group-flush">
+                        <li class="list-group-item">Nessun contratto legato a questo intervento</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 

@@ -1,17 +1,17 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement } from "@angular/core";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
-import { CitiesComponent } from "./cities.component";
+import { CitiesComponent } from './cities.component';
 
-describe("CitiesComponent", () => {
+describe('CitiesComponent', () => {
   let component: CitiesComponent;
   let fixture: ComponentFixture<CitiesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CitiesComponent],
+      declarations: [CitiesComponent]
     }).compileComponents();
   }));
 
@@ -21,7 +21,7 @@ describe("CitiesComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

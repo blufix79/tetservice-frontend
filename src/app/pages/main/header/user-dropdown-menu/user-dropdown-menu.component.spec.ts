@@ -9,7 +9,7 @@ describe('UserDropdownMenuComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [UserDropdownMenuComponent],
+        declarations: [UserDropdownMenuComponent]
       }).compileComponents();
     })
   );

@@ -1,0 +1,25 @@
+.timeSolotRadio:disabled {
+    opacity: 0.5;
+}
+
+.timeslots-block {
+    table {
+        td {
+            .form-group {
+                margin-bottom: 0rem;
+            }
+        }
+    }
+}
+
+.customer-button-group {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: flex-end;
+
+    ::ng-deep {
+        .form-group {
+            margin-bottom: unset;
+        }
+    }
+}

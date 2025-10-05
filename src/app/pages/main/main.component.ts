@@ -3,7 +3,7 @@ import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
   public sidebarMenuOpened = true;

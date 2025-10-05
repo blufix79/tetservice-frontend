@@ -1,14 +1,13 @@
 <aside #mainSidebar class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a [routerLink]="['/']" class="brand-link">
-    <!-- <img
-      src="assets/img/logo.svg"
+  <a [routerLink]="['/']" class="brand-link" style="text-align: center;">
+    <img
+      src="assets/img/logoAta.png"
       alt="Tet Logo"
       class="img-fluid"
       style="opacity: 0.8;"
-    /> -->
-    TET SERVICE
-    <div class="brand-subtitle">Admin Dashboard</div>
+    />
+    <!-- <div class="brand-subtitle">Admin Dashboard</div> -->
     <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
   </a>
 
@@ -45,6 +44,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a [routerLink]="['/contracts']" class="nav-link">
+            <i class="nav-icon fas fa-file-signature"></i>
+            <p>Contratti</p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a [routerLink]="['/interventions']" class="nav-link">
             <i class="nav-icon fas fa-tools"></i>
             <p>Interventi</p>
@@ -71,7 +76,13 @@
         <li class="nav-item">
           <a [routerLink]="['/states']" class="nav-link">
             <i class="nav-icon fas fa-layer-group"></i>
-            <p>Stati</p>
+            <p>Stati interventi</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/repairtypes']" class="nav-link">
+            <i class="nav-icon fas fa-toolbox"></i>
+            <p>Tipologia Interventi</p>
           </a>
         </li>
         <li class="nav-item">

@@ -1,12 +1,12 @@
-import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppService } from 'src/app/utils/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   public registerForm: FormGroup;
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       fullName: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
-      retypePassword: new FormControl(null, Validators.required),
+      retypePassword: new FormControl(null, Validators.required)
     });
   }
 

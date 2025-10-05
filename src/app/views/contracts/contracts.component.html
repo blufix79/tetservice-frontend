@@ -1,0 +1,132 @@
+<app-header-page titlePage="Contratti" breadCrumbPage="Contratti" iconPage="fas fa-file-signature"></app-header-page>
+
+<app-content-page>
+    <div content-header>
+        <h3 class="card-title">
+            Contratti
+        </h3>
+        <div class="card-tools">
+            <button type="button" class="btn bg-primary" data-widget="remove" data-toggle="tooltip" title="Remove"
+                (click)="newItem(contentAddContract)">
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Id</th>
+                <th>Data</th>
+                <th>Descrizione</th>
+                <th>Scadenza</th>
+                <th>Cliente</th>
+                <th>Attivo</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contract of contracts; let i = index">
+                <td style="width: 5%">{{ i+1 }}</td>
+                <td>{{contract.id}}</td>
+                <td>{{contract.data|date:'d-MM-y':'it-IT'}}</td>
+                <td>{{contract.descrizione}}</td>
+                <td>{{contract.scadenza|date:'d-MM-y':'it-IT'}}</td>
+                <td>{{contract.customer.cognome}} {{contract.customer.nome}}</td>
+                <td> <i [ngClass]="{'fa fa-check text-success':contract.attivo==1}"></i><i
+                        [ngClass]="{'fa fa-times text-danger':contract.attivo==0}"></i></td>
+                <td class="actions" style="width: 10%">
+                    <button class="btn btn-sm btn-primary" (click)="edit(contentAddContract, contract)">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="delete(contract)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</app-content-page>
+
+<ng-template #contentAddContract let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{titleModal}} Contratto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="contractForm">
+            <div class="form-group">
+                <label>Data</label>
+                <input type="date" formControlName="data" class="form-control datetimepicker-input">
+                <div *ngIf="data.invalid && (data.dirty || data.touched)" class="alert alert-danger">
+                    <div *ngIf="data.errors.required">
+                        La data è obbligatoria
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Scadenza</label>
+                <input type="date" formControlName="scadenza" class="form-control datetimepicker-input">
+                <div *ngIf="scadenza.invalid && (scadenza.dirty || scadenza.touched)" class="alert alert-danger">
+                    <div *ngIf="scadenza.errors.required">
+                        La scadenza è obbligatoria
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descrizione</label>
+                <textarea formControlName="descrizione" class="form-control"></textarea>
+                <div *ngIf="descrizione.invalid && (descrizione.dirty || descrizione.touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="descrizione.errors.required">
+                        La descrizione è obbligatoria
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <!-- <app-select label="Cliente" [formControlObject]="customer" propertyName="nome|cognome"
+                        [items]="customers" (selected)="selectCustomer($event)"></app-select> -->
+                    <app-select-http [formControlObject]="customer"
+                        (selected)="selectCustomer($event)"></app-select-http>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" formControlName="attivo" class="custom-control-input"
+                                id="customSwitch1">
+                            <label class="custom-control-label" for="customSwitch1">Attivo</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Prodotti in contratto</label>
+                        <select class="form-control select-product-element" formControlName="products" #selectproduct
+                            multiple="multiple">
+                            <option *ngFor="let product of productsList" [value]="product.id">{{product.marca}}
+                                {{product.modello}}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="products.invalid && (products.dirty || products.touched)" class="alert alert-danger">
+                        <div *ngIf="products.errors.required">
+                            Scegli almeno un prodotto dalla lista
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">
+            Annulla
+        </button>
+        <button type="button" ngbAutofocus class="btn btn-success" (click)="save()">
+            Salva
+        </button>
+    </div>
+    {{contractForm.value|json}}
+</ng-template>

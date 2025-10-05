@@ -1,17 +1,17 @@
 import {
   Component,
-  OnInit,
-  ViewChild,
-  HostListener,
   ElementRef,
+  HostListener,
+  OnInit,
   Renderer2,
+  ViewChild
 } from '@angular/core';
 import { AppService } from 'src/app/utils/services/app.service';
 
 @Component({
   selector: 'app-user-dropdown-menu',
   templateUrl: './user-dropdown-menu.component.html',
-  styleUrls: ['./user-dropdown-menu.component.scss'],
+  styleUrls: ['./user-dropdown-menu.component.scss']
 })
 export class UserDropdownMenuComponent implements OnInit {
   public user;

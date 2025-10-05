@@ -3,3 +3,73 @@
   align-items: center;
   justify-items: center;
 }
+
+.table-actions {
+  button {
+    margin-left: 5px;
+  }
+}
+
+::ng-deep {
+  .searchHighLight {
+    background-color: aquamarine;
+  }
+
+  .card-title.tools {
+    width: 50% !important;
+  }
+
+  .select2-selection {
+    width: 100%;
+  }
+
+  .col-form-label {
+    font-size: 0.9rem;
+  }
+}
+
+@media print {
+  body {
+    border: 1px solid red;
+    -webkit-print-color-adjust: exact !important
+  }
+
+  ::ng-deep {
+    #sidebar-overlay {
+      display: none !important;
+    }
+
+    .wrapper {
+      background-color: #fff !important;
+    }
+
+    .content-wrapper {
+      background-color: #fff !important;
+    }
+
+    .card-header {
+      display: none !important;
+    }
+
+    .card-footer {
+      display: none !important;
+    }
+
+    .content-header {
+      display: block !important;
+
+      h1 {
+        font-size: 1.5em;
+        color: black !important;
+      }
+
+      .breadcrumb {
+        display: none;
+      }
+    }
+
+    #listInterventions {
+      display: block;
+    }
+  }
+}

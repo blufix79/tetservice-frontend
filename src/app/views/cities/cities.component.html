@@ -6,7 +6,9 @@
 
 <app-content-page>
   <div content-header>
-    <h3 class="card-title">Città</h3>
+    <h3 class="card-title">
+      <app-search (searchWord)="searchWordText($event)"></app-search>
+    </h3>
     <div class="card-tools">
       <button
         type="button"
@@ -14,16 +16,96 @@
         data-widget="remove"
         data-toggle="tooltip"
         title="Remove"
-        (click)="newCity()"
+        (click)="newItem(contentAddCity)"
       >
         <i class="fa fa-plus-circle"></i>
       </button>
     </div>
   </div>
 
-  <div class="list-group list-group-flush">
-    <div class="list-group-item" *ngFor="let city of cities | async">
-      {{ city.comune }}
-    </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Città</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let city of cities | filterGeneric: search | paginate: {itemsPerPage: 15, currentPage: p}; let i = index">
+        <td style="width: 5%"><b>{{ i+1 }}</b></td>
+        <td style="width: 5%">{{ city.id }}</td>
+        <td appHiglight [content]="city.comune" [searchedWord]="search">{{ city.comune }}</td>
+        <td class="actions" style="width: 15%">
+          <button class="btn btn-sm btn-primary" (click)="edit(contentAddCity, city)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="delete(city)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div content-footer>
+    <pagination-controls (pageChange)="p = $event" previousLabel="Indietro" nextLabel="Avanti"></pagination-controls>
   </div>
 </app-content-page>
+
+<ng-template #contentAddCity let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="cityForm">
+      <div class="form-group">
+        <input type="hidden" formGroupName="id" />
+        <label for="nome">Comune</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="comune"
+          [ngClass]="{
+            'is-valid': comune.valid,
+            'is-invalid': comune.invalid && (comune.dirty || comune.touched)
+          }"
+          required
+        />
+        <div
+          *ngIf="comune.invalid && (comune.dirty || comune.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="comune.errors.required">
+            Il nome del comune è obbligatorio
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="modal.dismiss('cancel click')"
+    >
+      Annulla
+    </button>
+    <button
+      type="button"
+      ngbAutofocus
+      class="btn btn-success"
+      (click)="save()"
+    >
+      Salva
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,23 @@
+<div class="form-group">
+  <!-- <input class="form-control" type="hidden" /> -->
+  <label for="telefono">{{label}}</label>
+  <div ngbDropdown class="d-block">
+    <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{selectedName}}</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <div class="dropdown-header"><input class="form-control" [(ngModel)]="keyword"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="search()" type="text"
+          placeholder="Digita le prime lettere..."></div>
+      <div class="list-items">
+        <button ngbDropdownItem *ngFor="let item of items" (click)="selectItem(item)"><span
+            *ngFor="let name of labelProperties"><b *ngIf="name=='indirizzo'">- <small><i>(indirizzo)</i></small>
+            </b>{{item[name]}} </span> <span>- {{item.city.comune}}</span></button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="formControlObject.invalid && (formControlObject.dirty || formControlObject.touched)"
+    class="alert alert-danger">
+    <div *ngIf="formControlObject.errors.required">
+      Seleziona un {{label}} dalla lista
+    </div>
+  </div>
+</div>

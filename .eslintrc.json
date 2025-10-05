@@ -8,6 +8,10 @@
         "project": ["tsconfig.json", "e2e/tsconfig.json"],
         "createDefaultProgram": true
       },
+      "env": {
+        "browser": true,
+        "node": true
+      },
       "extends": [
         "eslint:recommended",
         "plugin:@angular-eslint/recommended",

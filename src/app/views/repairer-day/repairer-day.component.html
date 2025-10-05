@@ -1,0 +1,83 @@
+<app-header-page [titlePage]="title" breadCrumbPage="Appuntamenti" iconPage="fas fa-print"></app-header-page>
+
+<app-content-page>
+  <div content-header>
+    <h3 class="card-title tools">
+      <div class="row">
+        <div class="col-4"><button class="btn btn-default" [routerLink]="['/repairers']"><i class="fas fa-undo"></i>
+            Lista Tecnici</button></div>
+        <div class="col-8">
+          <div class="form-group row">
+            <label class="col-5 col-form-label">Appuntamenti del</label>
+            <div class="col-5"><input type="date" class="form-control" [(ngModel)]="date"
+                (ngModelChange)="changeDate()"></div>
+          </div>
+        </div>
+      </div>
+    </h3>
+    <div class="card-tools">
+      <button type="button" class="btn bg-gradient-success" data-widget="remove" data-toggle="tooltip" title="Print"
+        (click)="print()">
+        <i class="fa fa-print"></i>
+      </button>
+    </div>
+  </div>
+
+
+
+
+  <table class="table" id="listInterventions">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Data / Ora</th>
+        <th>Cliente</th>
+        <th>Descrizione</th>
+        <th>Tipo Intervento</th>
+        <th>Prodotti</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let intervention of interventions; let i = index">
+        <td style="width: 5%">{{ i+1 }}</td>
+        <td>
+          {{intervention.data|date:'d-MM-y':'it-IT'}} /
+          {{'1980-01-01 '+intervention.timeslots.start|date:'HH:mm':'it-IT'}} - {{'1980-01-01
+          '+intervention.timeslots.end|date:'HH:mm':'it-IT'}}
+          <!-- {{intervention.timeslots.start}} - {{intervention.timeslots.end}} -->
+
+        </td>
+        <td>
+          <b>Nome e Cognome</b> {{intervention.customer.nome}} {{intervention.customer.cognome}}<br>
+          <b>Indirizzo:</b> {{intervention.customer.indirizzo}} - {{intervention.customer.city.comune}}<br>
+          <b>Telefono:</b> {{intervention.customer.telefono}} - {{intervention.customer.cellulare}}
+        </td>
+        <td>{{intervention.descrizione}}</td>
+        <td><span class="type-list" *ngFor="let repairType of intervention.repair_types">{{repairType.nome}}</span></td>
+        <td><span class="type-list" *ngFor="let product of intervention.products">{{product.marca}} {{product.nome}}
+            {{product.modello}}</span></td>
+        <td>{{intervention.note}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="listInterventionsPrint">
+    <div class="intervention" *ngFor="let intervention of interventions; let i = index">
+      <ul>
+        <li><b class="name">{{intervention.customer.nome}} {{intervention.customer.cognome}}</b> dalle {{'1980-01-01
+          '+intervention.timeslots.start|date:'HH:mm':'it-IT'}} alle {{'1980-01-01
+          '+intervention.timeslots.end|date:'HH:mm':'it-IT'}}</li>
+        <li><b>Indirizzo: </b> {{intervention.customer.indirizzo}} - {{intervention.customer.city.comune}} -
+          <b>Telefono:</b> {{intervention.customer.telefono}} - {{intervention.customer.cellulare}} </li>
+        <li><b>Tipo intervento: </b> <span
+            *ngFor="let repairType of intervention.repair_types; last as isLast">{{repairType.nome}}<span
+              *ngIf="!isLast">, </span></span></li>
+        <li><b>Descrizione:</b> {{intervention.descrizione}}</li>
+        <li><b>Prodotti: </b> <span *ngFor="let product of intervention.products; last as isLast">{{product.marca}}
+            {{product.nome}} {{product.modello}}<span *ngIf="!isLast">, </span></span></li>
+        <li><b>Note: </b> {{intervention.note}}</li>
+      </ul>
+    </div>
+  </div>
+</app-content-page>

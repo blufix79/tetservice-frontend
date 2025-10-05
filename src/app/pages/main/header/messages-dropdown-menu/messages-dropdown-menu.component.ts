@@ -1,16 +1,16 @@
 import {
   Component,
-  OnInit,
-  HostListener,
   ElementRef,
-  ViewChild,
+  HostListener,
+  OnInit,
   Renderer2,
+  ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'app-messages-dropdown-menu',
   templateUrl: './messages-dropdown-menu.component.html',
-  styleUrls: ['./messages-dropdown-menu.component.scss'],
+  styleUrls: ['./messages-dropdown-menu.component.scss']
 })
 export class MessagesDropdownMenuComponent implements OnInit {
   @ViewChild('dropdownMenu', { static: false }) dropdownMenu;

@@ -1,3 +1,15 @@
+.user-menu{
+  .nav-link{
+    .elevation-2 {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 50%;
+    }
+  }  
+}
+
 .user-menu > .nav-link {
   cursor: pointer;
 }
@@ -23,6 +35,15 @@
   height: 175px;
   padding: 10px;
   text-align: center;
+
+  .elevation-2 {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 50%;
+    margin: auto;
+  }
 }
 
 .user-menu > .dropdown-menu > li.user-header > img {

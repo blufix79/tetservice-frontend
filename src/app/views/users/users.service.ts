@@ -8,13 +8,13 @@ import { User } from 'src/app/models/user.model';
   providedIn: 'root'
 })
 export class UsersService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getUsers(){
+  getUsers() {
     return this.http.get<User[]>('admin_users');
   }
 
-  deleteUser(idUser: number){
+  deleteUser(idUser: number) {
     return this.http.delete(`admin_users?id=${idUser}`);
   }
 }

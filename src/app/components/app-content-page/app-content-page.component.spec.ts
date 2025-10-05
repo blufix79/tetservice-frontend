@@ -1,5 +1,5 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -9,12 +9,13 @@ describe('AppContentPageComponent', () => {
   let component: AppContentPageComponent;
   let fixture: ComponentFixture<AppContentPageComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AppContentPageComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AppContentPageComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppContentPageComponent);

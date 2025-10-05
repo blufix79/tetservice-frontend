@@ -9,7 +9,7 @@ describe('MessagesDropdownMenuComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MessagesDropdownMenuComponent],
+        declarations: [MessagesDropdownMenuComponent]
       }).compileComponents();
     })
   );

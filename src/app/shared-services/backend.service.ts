@@ -6,22 +6,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BackendService {
+  _backendConfig: BackendConfig;
+  _backend: Backend;
 
-_backendConfig: BackendConfig;
-_backend: Backend;
+  constructor() {
+    this._backendConfig = new BackendConfig();
+    this._backend.url = this._backendConfig.prodUrl;
+    this._backend.productionMode = true;
+  }
 
-constructor() {
-  this._backendConfig = new BackendConfig();
-  this._backend.url = this._backendConfig.prodUrl;
-  this._backend.productionMode = true;
-}
-
-getUrl(): string{
-  return this._backend.url;
-}
-setUrl(){
-  this._backend.url;
-}
-
-
+  getUrl(): string {
+    return this._backend.url;
+  }
+  setUrl() {
+    this._backend.url;
+  }
 }

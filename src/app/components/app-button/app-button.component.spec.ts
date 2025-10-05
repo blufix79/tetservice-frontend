@@ -9,7 +9,7 @@ describe('AppButtonComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AppButtonComponent],
+        declarations: [AppButtonComponent]
       }).compileComponents();
     })
   );

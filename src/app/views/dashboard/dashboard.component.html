@@ -1,0 +1,138 @@
+<app-header-page titlePage="Dashboard" iconPage="fas fa-tools"></app-header-page>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-gradient-purple">
+            <h3 class="card-title">
+              <i class="fas fa-tools"></i>
+              Prossimi interventi
+            </h3>
+          </div>
+          <div class="card-body p-0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titolo</th>
+                  <th>Data</th>
+                  <th>Prodotto</th>
+                  <th>Cliente</th>
+                  <th>Tecnico</th>
+                  <th>Stato</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let intervention of interventions; let i = index">
+                  <td style="width: 5%">{{ i+1 }}</td>
+                  <td>{{intervention.titolo}}</td>
+                  <td>{{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
+                      {{product.nome}} {{product.modello}}</span></td>
+                  <td>{{intervention.customer.cognome}}</td>
+                  <td>{{intervention.repairer.cognome}}</td>
+                  <td>{{intervention.state.nome}}</td>
+                  <td class="actions" style="width: 5%">
+                    <button class="btn btn-sm btn-success" [routerLink]="['/intervention',intervention.id]">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-gradient-orange">
+            <h3 class="card-title">
+              <i class="fas fa-tools"></i>
+              Interventi da fissare
+            </h3>
+          </div>
+          <div class="card-body p-0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titolo</th>
+                  <th>Data</th>
+                  <th>Prodotto</th>
+                  <th>Cliente</th>
+                  <th>Tecnico</th>
+                  <th>Stato</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let intervention of interventions; let i = index">
+                  <td style="width: 5%">{{ i+1 }}</td>
+                  <td>{{intervention.titolo}}</td>
+                  <td>{{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
+                      {{product.nome}} {{product.modello}}</span></td>
+                  <td>{{intervention.customer.cognome}}</td>
+                  <td>{{intervention.repairer.cognome}}</td>
+                  <td>{{intervention.state.nome}}</td>
+                  <td class="actions" style="width: 5%">
+                    <button class="btn btn-sm btn-success" [routerLink]="['/intervention',intervention.id]">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-gradient-lightblue">
+            <h3 class="card-title">
+              <i class="fas fa-file-signature"></i>
+              Contratti in scadenza
+            </h3>
+          </div>
+          <div class="card-body p-0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Id</th>
+                  <th>Data</th>
+                  <th>Descrizione</th>
+                  <th>Scadenza</th>
+                  <th>Cliente</th>
+                  <th>Attivo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let contract of contracts; let i = index">
+                  <td style="width: 5%">{{ i+1 }}</td>
+                  <td>{{contract.id}}</td>
+                  <td>{{contract.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{contract.descrizione}}</td>
+                  <td>{{contract.scadenza|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{contract.customer.cognome}} {{contract.customer.nome}}</td>
+                  <td> <i [ngClass]="{'fa fa-check text-success':contract.attivo==1}"></i><i
+                      [ngClass]="{'fa fa-times text-danger':contract.attivo==0}"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

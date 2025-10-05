@@ -1,0 +1,16 @@
+<div class="form-group">
+    <!-- <input class="form-control" type="hidden" /> -->
+    <label for="telefono">{{label}}</label>
+    <div ngbDropdown class="d-block">
+      <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>{{selectedName}}</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <div class="dropdown-header"><input class="form-control" [(ngModel)]="search" [ngModelOptions]="{standalone: true}" type="text" placeholder="cerca..."></div>
+        <button ngbDropdownItem *ngFor="let item of items | filterGeneric: search" (click)="selectItem(item)"><span *ngFor="let name of labelProperties">{{item[name]}} </span></button>
+      </div>
+    </div>
+    <div *ngIf="formControlObject.invalid && (formControlObject.dirty || formControlObject.touched)" class="alert alert-danger">
+      <div *ngIf="formControlObject.errors.required">
+        Seleziona un {{label}} dalla lista
+      </div>
+    </div>
+  </div>

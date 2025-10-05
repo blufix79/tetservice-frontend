@@ -4,25 +4,26 @@
     data-toggle="dropdown"
     (click)="toggleDropdownMenu()"
   >
-    <img
-      [src]="user.image"
+    <!-- <img
+      [src]=""
       class="user-image img-circle elevation-2"
       alt="User Image"
-    />
+    /> -->
+    <div class="elevation-2"><i class="fa fa-user"></i></div>
   </a>
   <ul #dropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
     <!-- User image -->
     <li class="user-header bg-primary">
-      <img [src]="user.image" class="img-circle elevation-2" alt="User Image" />
-
+      <!-- <img [src]="" class="img-circle elevation-2" alt="User Image" /> -->
+      <div class="elevation-2"><i class="fa fa-2x fa-user"></i></div>
       <p>
-        Alexander Pierce - Web Developer
-        <small>Member since Nov. 2012</small>
+       {{user.firstName}} {{user.lastName}}
+        <small>user</small>
       </p>
     </li>
     <!-- Menu Body -->
     <li class="user-body">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-4 text-center">
           <a href="#">Followers</a>
         </div>
@@ -32,16 +33,16 @@
         <div class="col-4 text-center">
           <a href="#">Friends</a>
         </div>
-      </div>
+      </div> -->
       <!-- /.row -->
     </li>
     <!-- Menu Footer-->
     <li class="user-footer">
-      <a [routerLink]="['/profile']" class="btn btn-default btn-flat">
+      <!-- <a [routerLink]="['/profile']" class="btn btn-default btn-flat">
         Profile
-      </a>
+      </a> -->
       <a (click)="logout()" class="btn btn-default btn-flat float-right"
-        >Sign out</a
+        >Logout</a
       >
     </li>
   </ul>

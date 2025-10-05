@@ -1,7 +1,7 @@
 <app-header-page
   titlePage="Stati"
   breadCrumbPage="Stati"
-  iconPage="fas fa-gear"
+  iconPage="fas fa-layer-group"
 ></app-header-page>
 
 <app-content-page>
@@ -10,21 +10,47 @@
     <div class="card-tools">
       <button
         type="button"
-        class="btn bg-primary"
+        class="btn btn-primary"
         data-widget="remove"
         data-toggle="tooltip"
         title="Remove"
-        (click)="newState()"
+        (click)="newItem(contentAddState)"
       >
         <i class="fa fa-plus-circle"></i>
       </button>
     </div>
   </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Stato</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let state of states; let i = index">
+        <td style="width: 5%">{{ i+1 }}</td>
+        <td>{{ state.id }}</td>
+        <td>{{ state.nome }}</td>
+        <td class="actions" style="width: 10%">
+          <button class="btn btn-sm btn-primary" (click)="edit(contentAddState, state)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="delete(state)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </app-content-page>
 
 <ng-template #contentAddState let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Nuovo Stato</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
     <button
       type="button"
       class="close"
@@ -34,7 +60,32 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body"></div>
+  <div class="modal-body">
+    <form [formGroup]="stateForm">
+      <div class="form-group">
+        <input type="hidden" formGroupName="id" />
+        <label for="nome">Nome</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="nome"
+          [ngClass]="{
+            'is-valid': nome.valid,
+            'is-invalid': nome.invalid && (nome.dirty || nome.touched)
+          }"
+          required
+        />
+        <div
+          *ngIf="nome.invalid && (nome.dirty || nome.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="nome.errors.required">
+            Il nome dello stato è obbligatorio
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
   <div class="modal-footer">
     <button
       type="button"
@@ -46,10 +97,10 @@
     <button
       type="button"
       ngbAutofocus
-      class="btn btn-danger"
-      (click)="modal.close('ok')"
+      class="btn btn-success"
+      (click)="save()"
     >
-      Ok
+      Salva
     </button>
   </div>
 </ng-template>

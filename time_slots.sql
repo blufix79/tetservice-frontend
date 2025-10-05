@@ -1,0 +1,60 @@
+-- MariaDB dump 10.19-11.2.2-MariaDB, for osx10.17 (x86_64)
+--
+-- Host: localhost    Database: tetservice
+-- ------------------------------------------------------
+-- Server version	11.2.2-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `time_slots`
+--
+
+DROP TABLE IF EXISTS `time_slots`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `time_slots` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `start` time NOT NULL,
+  `end` time NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `time_slots`
+--
+
+LOCK TABLES `time_slots` WRITE;
+/*!40000 ALTER TABLE `time_slots` DISABLE KEYS */;
+INSERT INTO `time_slots` VALUES
+(1,'10:00:00','12:00:00','2023-09-23 16:07:14','2023-09-23 16:07:14'),
+(2,'11:00:00','13:00:00','2023-09-24 10:53:06','2023-09-24 10:53:06'),
+(3,'12:00:00','13:00:00','2023-09-24 10:53:22','2023-09-24 10:53:22'),
+(4,'15:00:00','17:00:00','2023-09-24 10:53:35','2023-09-24 10:53:35'),
+(5,'16:00:00','18:00:00','2023-09-24 10:53:48','2023-09-24 10:53:48'),
+(6,'17:00:00','19:00:00','2023-09-24 10:54:16','2023-09-24 10:54:16');
+/*!40000 ALTER TABLE `time_slots` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-08-02 17:11:21

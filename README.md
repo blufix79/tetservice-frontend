@@ -1,5 +1,6 @@
 # Tet-frontend
 
+TetService is a mini management system for the management of a service center.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.3.
 
 ## Development server

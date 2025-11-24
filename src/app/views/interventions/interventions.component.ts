@@ -401,12 +401,12 @@ export class InterventionsComponent implements OnInit {
       }
     });
 
-    jQuery('.select-element[name="products"]')
-      .val((this.products.value || []).map(String))
-      .trigger('change');
-    jQuery('.select-element[name="repairTypes"]')
-      .val((this.repairTypes.value || []).map(String))
-      .trigger('change');
+    // jQuery('.select-element[name="products"]')
+    //   .val((this.products.value || []).map(String))
+    //   .trigger('change');
+    // jQuery('.select-element[name="repairTypes"]')
+    //   .val((this.repairTypes.value || []).map(String))
+    //   .trigger('change');
   }
 
   private parseSelectValues(value: any[]): number[] {

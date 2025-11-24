@@ -2,8 +2,18 @@
 
 <app-content-page>
   <div content-header>
-    <h3 class="card-title tools">
+    <h3 class="card-title tools interventions-filters">
       <app-search (searchWord)="searchWordText($event)"></app-search>
+      <div class="date-range-filter">
+        <label>Dal</label>
+        <input type="date" [(ngModel)]="startDateFilter" name="startDateFilter" class="form-control" />
+        <label>Al</label>
+        <input type="date" [(ngModel)]="endDateFilter" name="endDateFilter" class="form-control" />
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyDateFilter()">Filtra</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="resetDateFilters()">
+          Reset
+        </button>
+      </div>
     </h3>
     <div class="card-tools">
       <button type="button" class="btn bg-primary" data-widget="remove" data-toggle="tooltip" title="Remove"
@@ -41,7 +51,7 @@
           {{intervention.titolo}}</td>
         <td style="width: 20%" appHiglight [content]="intervention.descrizione" [searchedWord]="search">
           {{intervention.descrizione}}</td>
-        <td style="width: 10%" appHiglight [content]="intervention.data|date:'dd-M-y'" [searchedWord]="search">
+        <td style="width: 10%" appHiglight [content]="intervention.data|date:'dd-MM-y'" [searchedWord]="search">
           {{intervention.data|date:'dd-MM-y'}}</td>
         <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
             {{product.nome}} {{product.modello}}</span></td>
@@ -224,7 +234,8 @@
           <div class="form-group">
             <label>Prodotti</label>
             <div class="product-button-group">
-              <select class="form-control select-element" name="products" formControlName="products" multiple="multiple">
+              <select class="form-control select-element" name="products" formControlName="products"
+                multiple="multiple">
                 <option *ngFor="let product of productsList" [value]="product.id">{{product.marca}}
                   {{product.modello}}
                 </option>

@@ -1,5 +1,5 @@
 import { Intervention } from './../../models/Intervention';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,15 +7,32 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InterventionsService {
-  constructor(private http: HttpClient) {}
-  get(filter: string = null, value: string = null): Observable<Intervention[]> {
-    if (filter == null) {
-      return this.http.get<Intervention[]>('interventions');
-    } else {
-      return this.http.get<Intervention[]>(
-        'interventions?filter=' + filter + '&value=' + value
-      );
+  constructor(private http: HttpClient) { }
+  get(
+    filter: string = null,
+    value: string = null,
+    orderField?: string,
+    orderDirection?: string
+  ): Observable<Intervention[]> {
+    // if (filter == null) {
+    //   return this.http.get<Intervention[]>('interventions');
+    // }
+
+    let params = new HttpParams();
+    if (filter) {
+      params = params.set('filter', filter);
+      params = params.append('value', value);
     }
+    if (orderField) {
+      params = params.append('orderField', orderField);
+    }
+    if (orderDirection) {
+      params = params.append('orderDirection', orderDirection);
+    }
+
+    return this.http.get<Intervention[]>('interventions', {
+      params
+    });
   }
 
   getIntervention(id: string): Observable<Intervention> {
@@ -28,9 +45,9 @@ export class InterventionsService {
   ): Observable<Intervention[]> {
     return this.http.get<Intervention[]>(
       'interventions?filter=repairerDay&value=' +
-        date +
-        '&repairer_id=' +
-        repairerId
+      date +
+      '&repairer_id=' +
+      repairerId
     );
   }
 

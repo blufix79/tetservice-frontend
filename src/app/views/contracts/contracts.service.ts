@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contract } from '../../models/Contracts';
@@ -9,13 +9,27 @@ import { Contract } from '../../models/Contracts';
 export class ContractsService {
   constructor(private http: HttpClient) {}
 
-  get(filter: string = null, value: string = null): Observable<Contract[]> {
+  get(
+    filter: string = null,
+    value: string = null,
+    order?: string
+  ): Observable<Contract[]> {
     if (filter == null) {
       return this.http.get<Contract[]>('contracts');
     }
-    return this.http.get<Contract[]>(
-      'contracts?filter=' + filter + '&value=' + value
-    );
+
+    let params = new HttpParams();
+    if (filter) {
+      params = params.set('filter', filter);
+      params = params.append('value', value);
+    }
+    if (order) {
+      params = params.append('order', order);
+    }
+
+    return this.http.get<Contract[]>('contracts', {
+      params: params
+    });
   }
 
   new(customer: Contract) {

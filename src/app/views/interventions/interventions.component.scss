@@ -24,3 +24,28 @@
         }
     }
 }
+
+.interventions-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+
+    label {
+        margin-bottom: 0px;
+    }
+
+    app-search {
+        flex-shrink: 0;
+    }
+}
+
+.date-range-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .form-control {
+        width: auto;
+    }
+}

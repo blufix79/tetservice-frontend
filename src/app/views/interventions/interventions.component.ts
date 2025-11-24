@@ -52,6 +52,8 @@ export class InterventionsComponent implements OnInit {
   @ViewChild('customerModal') customerModal: CustomerFormModalComponent;
   @ViewChild('productModal') productModal: ProductFormModalComponent;
   sendSelectedNewCustomer: BehaviorSubject<Customer>;
+  startDateFilter: string;
+  endDateFilter: string;
   sort = {
     date: 'asc'
   };
@@ -136,19 +138,11 @@ export class InterventionsComponent implements OnInit {
   }
 
   loadInterventions() {
-    this.interventionService
-      .get()
-      .subscribe((interventions: Intervention[]) => {
-        this.interventions = interventions;
-      });
+    this.fetchInterventions();
   }
 
   loadInterventionsSorted(orderField: string, orderValue: string) {
-    this.interventionService
-      .get(null, null, orderField, orderValue)
-      .subscribe((interventions: Intervention[]) => {
-        this.interventions = interventions;
-      });
+    this.fetchInterventions(orderField, orderValue);
   }
 
   loadSelectData() {
@@ -357,6 +351,18 @@ export class InterventionsComponent implements OnInit {
     this.loadInterventionsSorted(field, this.sort[field]);
   }
 
+  resetDateFilters() {
+    this.startDateFilter = '';
+    this.endDateFilter = '';
+    this.loadInterventions();
+  }
+
+  applyDateFilter() {
+    if (this.startDateFilter && this.endDateFilter) {
+      this.loadInterventions();
+    }
+  }
+
   openNewProductModal() {
     this.productModal.openModal();
   }
@@ -414,5 +420,21 @@ export class InterventionsComponent implements OnInit {
       }
       return +element;
     });
+  }
+
+  private fetchInterventions(orderField?: string, orderDirection?: string) {
+    const hasDateRange = this.startDateFilter && this.endDateFilter;
+    this.interventionService
+      .get(
+        hasDateRange ? 'rangeDate' : null,
+        null,
+        orderField,
+        orderDirection,
+        this.startDateFilter,
+        this.endDateFilter
+      )
+      .subscribe((interventions: Intervention[]) => {
+        this.interventions = interventions;
+      });
   }
 }

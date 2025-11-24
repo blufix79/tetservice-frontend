@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
 
   loadInterventions() {
     this.interventionsService
-      .get('rangeDays', '30', null, 'desc')
+      .get('lastDays', '30', null, 'desc')
       .subscribe((interventions: Intervention[]) => {
         this.interventions = interventions;
       });

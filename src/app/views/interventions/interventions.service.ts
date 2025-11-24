@@ -7,12 +7,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InterventionsService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   get(
     filter: string = null,
     value: string = null,
     orderField?: string,
-    orderDirection?: string
+    orderDirection?: string,
+    from?: string,
+    to?: string
   ): Observable<Intervention[]> {
     // if (filter == null) {
     //   return this.http.get<Intervention[]>('interventions');
@@ -21,7 +23,16 @@ export class InterventionsService {
     let params = new HttpParams();
     if (filter) {
       params = params.set('filter', filter);
-      params = params.append('value', value);
+      if (filter === 'rangeDate') {
+        if (from) {
+          params = params.append('from', from);
+        }
+        if (to) {
+          params = params.append('to', to);
+        }
+      } else {
+        params = params.append('to', value);
+      }
     }
     if (orderField) {
       params = params.append('orderField', orderField);
@@ -45,9 +56,9 @@ export class InterventionsService {
   ): Observable<Intervention[]> {
     return this.http.get<Intervention[]>(
       'interventions?filter=repairerDay&value=' +
-      date +
-      '&repairer_id=' +
-      repairerId
+        date +
+        '&repairer_id=' +
+        repairerId
     );
   }
 

@@ -61,6 +61,7 @@ import { ConfigurationsComponent } from './views/configurations/configurations.c
 import { TimeslotsComponent } from './views/timeslots/timeslots.component';
 import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 import { CustomerFormModalComponent } from './components/customer-form-modal/customer-form-modal.component';
+import { ProductFormModalComponent } from './components/product-form-modal/product-form-modal.component';
 
 //registerLocaleData(localeEn, 'en-EN');
 registerLocaleData(localeIt);
@@ -109,7 +110,8 @@ registerLocaleData(localeIt);
     ConfigurationsComponent,
     TimeslotsComponent,
     FilterCustomersPipe,
-    CustomerFormModalComponent
+    CustomerFormModalComponent,
+    ProductFormModalComponent
   ],
   imports: [
     BrowserModule,

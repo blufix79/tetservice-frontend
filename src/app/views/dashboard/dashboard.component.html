@@ -29,7 +29,7 @@
                 <tr *ngFor="let intervention of interventions; let i = index">
                   <td style="width: 5%">{{ i+1 }}</td>
                   <td>{{intervention.titolo}}</td>
-                  <td>{{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{intervention.data|date:'dd-MM-y'}}</td>
                   <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
                       {{product.nome}} {{product.modello}}</span></td>
                   <td>{{intervention.customer.cognome}}</td>
@@ -72,10 +72,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let intervention of interventions; let i = index">
+                <tr *ngFor="let intervention of interventionToBeScheduled; let i = index">
                   <td style="width: 5%">{{ i+1 }}</td>
                   <td>{{intervention.titolo}}</td>
-                  <td>{{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{intervention.data|date:'dd-MM-y'}}</td>
                   <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
                       {{product.nome}} {{product.modello}}</span></td>
                   <td>{{intervention.customer.cognome}}</td>
@@ -120,9 +120,9 @@
                 <tr *ngFor="let contract of contracts; let i = index">
                   <td style="width: 5%">{{ i+1 }}</td>
                   <td>{{contract.id}}</td>
-                  <td>{{contract.data|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{contract.data|date:'dd-MM-y'}}</td>
                   <td>{{contract.descrizione}}</td>
-                  <td>{{contract.scadenza|date:'d-MM-y':'it-IT'}}</td>
+                  <td>{{contract.scadenza|date:'dd-MM-y'}}</td>
                   <td>{{contract.customer.cognome}} {{contract.customer.nome}}</td>
                   <td> <i [ngClass]="{'fa fa-check text-success':contract.attivo==1}"></i><i
                       [ngClass]="{'fa fa-times text-danger':contract.attivo==0}"></i></td>

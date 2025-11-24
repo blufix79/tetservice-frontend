@@ -13,22 +13,17 @@ import { ProductsService } from './../products/products.service';
 import { Product } from './../../models/Product';
 import { InterventionsService } from './interventions.service';
 import { Intervention } from './../../models/Intervention';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormsModule
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import 'select2';
 import { PreviousRouteService } from 'src/app/shared-services/previous-route.service';
 import { CustomersComponent } from '../customers/customers.component';
-import { inject } from '@angular/core/testing';
 import { CitiesService } from '../cities/cities.service';
 import { CustomerFormModalComponent } from 'src/app/components/customer-form-modal/customer-form-modal.component';
 import { BehaviorSubject } from 'rxjs';
+import { ProductFormModalComponent } from 'src/app/components/product-form-modal/product-form-modal.component';
 // eslint-disable-next-line no-undef
 declare var jQuery: JQueryStatic;
 
@@ -55,7 +50,11 @@ export class InterventionsComponent implements OnInit {
   timeS: any;
   customer_add: CustomersComponent;
   @ViewChild('customerModal') customerModal: CustomerFormModalComponent;
+  @ViewChild('productModal') productModal: ProductFormModalComponent;
   sendSelectedNewCustomer: BehaviorSubject<Customer>;
+  sort = {
+    date: 'asc'
+  };
 
   constructor(
     private interventionService: InterventionsService,
@@ -144,6 +143,14 @@ export class InterventionsComponent implements OnInit {
       });
   }
 
+  loadInterventionsSorted(orderField: string, orderValue: string) {
+    this.interventionService
+      .get(null, null, orderField, orderValue)
+      .subscribe((interventions: Intervention[]) => {
+        this.interventions = interventions;
+      });
+  }
+
   loadSelectData() {
     this.productservice.get().subscribe((products: Product[]) => {
       this.productsList = products;
@@ -201,22 +208,7 @@ export class InterventionsComponent implements OnInit {
     this.slot.setValue(0);
 
     this.modal.shown.subscribe(() => {
-      let element = jQuery('.select-element');
-      element.select2({
-        theme: 'classic'
-      });
-
-      element.on('select2:select select2:unselect change', (e: any) => {
-        let value = jQuery(e.target).val() as any[];
-        let values = value.map((element) => {
-          return +element.split(': ')[1];
-        });
-        if (e.target.name == 'products') {
-          this.products.setValue(values);
-        } else {
-          this.repairTypes.setValue(values);
-        }
-      });
+      this.initSelect2Elements();
     });
   }
 
@@ -317,22 +309,7 @@ export class InterventionsComponent implements OnInit {
     this.modal = this.modalService.open(content, { size: 'xl' });
 
     this.modal.shown.subscribe(() => {
-      let element = jQuery('.select-element');
-      element.select2({
-        theme: 'classic'
-      });
-
-      element.on('select2:select select2:unselect change', (e: any) => {
-        let value = jQuery(e.target).val() as any[];
-        let values = value.map((element) => {
-          return +element.split(': ')[1];
-        });
-        if (e.target.name == 'products') {
-          this.products.setValue(values);
-        } else {
-          this.repairTypes.setValue(values);
-        }
-      });
+      this.initSelect2Elements();
     });
   }
 
@@ -373,5 +350,69 @@ export class InterventionsComponent implements OnInit {
     const customer = $event as Customer;
     this.sendSelectedNewCustomer.next(customer);
     this.toastr.success('Dati salvati correttamente', 'Nuovo Cliente');
+  }
+
+  toggleSort(field: string) {
+    this.sort[field] = this.sort[field] === 'asc' ? 'desc' : 'asc';
+    this.loadInterventionsSorted(field, this.sort[field]);
+  }
+
+  openNewProductModal() {
+    this.productModal.openModal();
+  }
+
+  onSaveProduct(product: Product) {
+    this.productsList = [...this.productsList, product];
+    const currentProducts = this.products.value ? [...this.products.value] : [];
+    if (!currentProducts.includes(product.id)) {
+      currentProducts.push(product.id);
+      this.products.setValue(currentProducts);
+    }
+    //setTimeout(() => this.initSelect2Elements());
+    this.toastr.success('Dati salvati correttamente', 'Nuovo Prodotto');
+  }
+
+  private initSelect2Elements() {
+    const element = jQuery('.select-element');
+    element.each((_, el) => {
+      const current = jQuery(el);
+      if (current.hasClass('select2-hidden-accessible')) {
+        current.select2('destroy');
+      }
+    });
+    element.off('select2:select select2:unselect change');
+    element.select2({
+      theme: 'classic'
+    });
+
+    element.on('select2:select select2:unselect change', (e: any) => {
+      const value = jQuery(e.target).val() as any[];
+      const values = this.parseSelectValues(value);
+      if (e.target.name == 'products') {
+        this.products.setValue(values);
+      } else {
+        this.repairTypes.setValue(values);
+      }
+    });
+
+    jQuery('.select-element[name="products"]')
+      .val((this.products.value || []).map(String))
+      .trigger('change');
+    jQuery('.select-element[name="repairTypes"]')
+      .val((this.repairTypes.value || []).map(String))
+      .trigger('change');
+  }
+
+  private parseSelectValues(value: any[]): number[] {
+    if (!value || !value.length) {
+      return [];
+    }
+    return value.map((element: any) => {
+      if (typeof element === 'string' && element.indexOf(':') !== -1) {
+        const parts = element.split(': ');
+        return +parts[parts.length - 1];
+      }
+      return +element;
+    });
   }
 }

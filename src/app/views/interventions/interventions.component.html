@@ -20,7 +20,10 @@
         <th>Id</th>
         <th>Titolo</th>
         <th>Descrizione</th>
-        <th>Data</th>
+        <th>Data
+          <i *ngIf="sort.date==='asc';else dateSortElse" class="fa fa-sort-amount-up" (click)="toggleSort('data')"></i>
+          <ng-template #dateSortElse><i class="fa fa-sort-amount-down" (click)="toggleSort('data')"></i></ng-template>
+        </th>
         <th>Prodotto</th>
         <th>Cliente</th>
         <th>Tecnico</th>
@@ -34,12 +37,12 @@
         <td style="width: 1%">{{ i+1 }}</td>
         <td style="width: 1%" appHiglight [content]="intervention.id.toString()" [searchedWord]="search">
           {{intervention.id}}</td>
-        <td style="width: 25%" appHiglight [content]="intervention.titolo" [searchedWord]="search">
+        <td style="width: 18%" appHiglight [content]="intervention.titolo" [searchedWord]="search">
           {{intervention.titolo}}</td>
-        <td style="width: 15%" appHiglight [content]="intervention.descrizione" [searchedWord]="search">
+        <td style="width: 20%" appHiglight [content]="intervention.descrizione" [searchedWord]="search">
           {{intervention.descrizione}}</td>
-        <td style="width: 8%" appHiglight [content]="intervention.data|date:'d-M-y':'it-IT'" [searchedWord]="search">
-          {{intervention.data|date:'d-MM-y':'it-IT'}}</td>
+        <td style="width: 10%" appHiglight [content]="intervention.data|date:'dd-M-y'" [searchedWord]="search">
+          {{intervention.data|date:'dd-MM-y'}}</td>
         <td><span *ngFor="let product of intervention.products" class="badge badge-info">{{product.marca}}
             {{product.nome}} {{product.modello}}</span></td>
         <td>
@@ -220,10 +223,15 @@
         <div class="col-4">
           <div class="form-group">
             <label>Prodotti</label>
-            <select class="form-control select-element" name="products" formControlName="products" multiple="multiple">
-              <option *ngFor="let product of productsList" [value]="product.id">{{product.marca}} {{product.modello}}
-              </option>
-            </select>
+            <div class="product-button-group">
+              <select class="form-control select-element" name="products" formControlName="products" multiple="multiple">
+                <option *ngFor="let product of productsList" [value]="product.id">{{product.marca}}
+                  {{product.modello}}
+                </option>
+              </select>
+              <button type="button" class="btn bg-success ml-2" (click)="openNewProductModal()"><i
+                  class="fa fa-plus"></i></button>
+            </div>
             <div *ngIf="products.invalid && (products.dirty || products.touched)" class="alert alert-danger">
               <div *ngIf="products.errors.required">
                 Scegli almeno un prodotto dalla lista
@@ -232,7 +240,8 @@
           </div>
           <div class="form-group">
             <label>Tipologia intervento</label>
-            <select class="form-control select-element" formControlName="repairTypes" multiple="multiple">
+            <select class="form-control select-element" name="repairTypes" formControlName="repairTypes"
+              multiple="multiple">
               <option *ngFor="let repairType of repairTypesList" [value]="repairType.id">{{repairType.nome}}</option>
             </select>
             <div *ngIf="repairTypes.invalid && (repairTypes.dirty || repairTypes.touched)" class="alert alert-danger">
@@ -257,3 +266,4 @@
 </ng-template>
 
 <app-customer-form-modal #customerModal (saveCustomer)="onSaveCustomer($event)"></app-customer-form-modal>
+<app-product-form-modal #productModal (saveProduct)="onSaveProduct($event)"></app-product-form-modal>
